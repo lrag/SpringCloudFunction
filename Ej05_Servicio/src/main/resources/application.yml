@@ -1,0 +1,26 @@
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: "ServicioClientes"
+
+  datasource:
+    url: jdbc:h2:file:c:/h2/bbdd_cloud_function_clientes
+    driverClassName: org.h2.Driver
+    username: sa
+    password: 
+        
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect   
+    
+spring.cloud.function.http.GET: getClientes; getCliente
+spring.cloud.function.http.POST: altaCliente
+spring.cloud.function.http.PUT: modificarCliente
+spring.cloud.function.http.DELETE: bajaCliente
+    
+    

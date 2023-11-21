@@ -1,0 +1,4 @@
+
+#spring.cloud:
+#    function:
+#      ineligible-definitions: mayusculas
