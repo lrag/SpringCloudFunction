@@ -1,4 +1,5 @@
 
-#spring.cloud:
+#spring:
+#  cloud:
 #    function:
 #      ineligible-definitions: mayusculas

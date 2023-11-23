@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.springframework.cloud.function.context.FunctionCatalog;
 import org.springframework.cloud.function.context.MessageRoutingCallback;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,11 +23,11 @@ public class ConfiguracionFunciones {
 	Consumer<String> guardar() {
 		return valor -> System.out.println(valor + " guardado en la BB.DD.");
 	}
-
+	
 	@Bean
 	Function<String, String> mayusculas() {
 		return texto -> texto.toUpperCase();
-	}	
+	}
 	
 	@Bean
 	MessageRoutingCallback messageRoutingCallback() {
@@ -35,9 +36,13 @@ public class ConfiguracionFunciones {
 			public String routingResult(Message<?> message) {				
 				System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 				System.out.println(message.getHeaders());
-				String uri = (String) message.getHeaders().get("uri");
-				System.out.println(uri);
-				switch(uri) {
+				
+				//String uri = (String) message.getHeaders().get("uri");
+				//System.out.println(uri);
+				//switch(uri) {
+				
+				String action = (String) message.getHeaders().get("action");
+				switch(action) {
 					case "/funcion/hora"       : return "hora";
 					case "/funcion/mayusculas" : return "mayusculas";
 					case "/funcion/guardar"    : return "guardar";
@@ -47,19 +52,7 @@ public class ConfiguracionFunciones {
 		};
 	}
 
-
 }
-
-
-/*
-
-POST /peticion
-function: insertar
-
-
-
-
-*/
 
 
 

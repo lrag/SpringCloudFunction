@@ -25,7 +25,7 @@ public class Aplicacion implements CommandLineRunner {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void run(String... args) throws Exception {
 		
 		System.out.println("---------------------------");
@@ -35,7 +35,7 @@ public class Aplicacion implements CommandLineRunner {
 		String textoMayusculas = mayusculas.apply(texto);
 		System.out.println(mayusculas.getClass().getName());
 		System.out.println(textoMayusculas);
-	
+		
 		Function<String,String> mayusculas2 = functionCatalog.lookup("mayusculas");
 		String textoMayusculas2 = mayusculas2.apply(texto);
 		System.out.println(mayusculas2.getClass().getName());

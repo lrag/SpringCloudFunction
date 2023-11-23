@@ -52,13 +52,13 @@ public class ConfiguracionFunciones {
 				//Body
 				System.out.println(mensaje.getPayload());
 				//Query parameters
-				System.out.println(mensaje.getHeaders().get("http_request_param"));
+				System.out.println(mensaje.getHeaders().get("http_request_param"));		
 				
 				return MessageBuilder.withPayload("Hola Radiola").build();
 			};
 	}
 	
-	//Query parameters
-	
-	
 }
+
+
+

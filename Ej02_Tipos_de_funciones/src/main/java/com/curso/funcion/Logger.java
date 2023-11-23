@@ -12,5 +12,5 @@ public class Logger implements Consumer<String>{
 	public void accept(String mensaje) {
 		System.out.println(Instant.now()+":"+mensaje);
 	}
-
+	
 }

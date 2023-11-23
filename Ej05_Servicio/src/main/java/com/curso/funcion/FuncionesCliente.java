@@ -5,8 +5,10 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 
@@ -16,12 +18,23 @@ import com.curso.modelo.persistencia.ClienteRepositorio;
 
 @Configuration
 public class FuncionesCliente {
-
+	
+	
+	/*
+	GET    /clientes
+	GET    /clientes/{id}
+	POST   /clientes
+	PUT    /clientes/{id}
+	DELETE /clientes/{id}
+	*/
+	
+	//GET /clientes?ciudad=Santa Pola
+	
 	@Bean
 	//https://stackoverflow.com/questions/75721418/headers-in-get-request-using-supplier-in-spring-cloud-function
-	Function<Message<String>, Message<List<Cliente>>> getClientes(ClienteRepositorio clienteRepo){
+	Function<Message<String>, Message<List<Cliente>>> listarClientes(ClienteRepositorio clienteRepo){
 		return (mensaje) -> {
-			//Obtenemos el filtro de clientes (lo ignorareos en el ejemplo)
+			//Obtenemos el filtro de clientes (lo ignoraremos en el ejemplo)
 			Object headerValue = mensaje.getHeaders().get("http_request_param");
 			String filtro = null;
 			if(headerValue != null) {
@@ -33,20 +46,28 @@ public class FuncionesCliente {
 			return MessageBuilder.withPayload(clienteRepo.findAll()).build();
 		};
 	}
-	
+		
+	//GET /buscarCliente/5
 	@Bean
-	Function<Message<String>, Message<?>> getCliente(ClienteRepositorio clienteRepo){
+	Function<Message<Integer>, Message<?>> buscarCliente(ClienteRepositorio clienteRepo){
 		return (mensaje) -> {
 			System.out.println("--------------------------------");
 			System.out.println("Buscando cliente");
 			System.out.println(mensaje.getHeaders());
 			System.out.println("Payload: "+mensaje.getPayload());
-			Integer id = Integer.valueOf(mensaje.getPayload());
-			Optional<Cliente> clienteOp = clienteRepo.findById(id);
+			Integer id = mensaje.getPayload();
 			
+			/*
+			return clienteRepo.findById(id)
+					.map(c -> MessageBuilder.withPayload(c).build())
+					.orElse(MessageBuilder.withPayload("El cliente no existe").build());
+					*/
+			
+			Optional<Cliente> clienteOp = clienteRepo.findById(id);
 			if(clienteOp.isPresent()) {
 				return MessageBuilder.withPayload(clienteOp.get()).build();
-			} else {
+			} else {				
+				//No podemos decidir aqui el status de la respuesta http asi que va a ser un 200 OK :(
 				return MessageBuilder.withPayload("El cliente no existe").build();
 			}
 		};
@@ -69,17 +90,16 @@ public class FuncionesCliente {
 	}	
 	
 	@Bean
-	Consumer<Message<String>> bajaCliente(GestorClientes gestorClientes){
+	Consumer<Message<Integer>> bajaCliente(GestorClientes gestorClientes){
 		return (mensaje) -> {
 			System.out.println("--------------------------------");
 			System.out.println("Baja cliente");
 			System.out.println(mensaje.getHeaders());
 			System.out.println("Payload: "+mensaje.getPayload());
 
-			Integer id = Integer.valueOf(mensaje.getPayload());
+			Integer id = mensaje.getPayload();
 			gestorClientes.borrar(id);
 		};
-	}		
-	
+	}	
 
 }

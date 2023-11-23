@@ -5,6 +5,7 @@ import java.util.function.Function;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.messaging.support.MessageBuilder;
 
@@ -20,6 +21,15 @@ public class FuncionesCliente {
         return new ConversorXML();
     }	
 	
+	
+	/*
+	POST /altaCliente
+	ContentType: application/xml
+	----------------------------
+	<cliente>...</cliente>	
+	*/
+	
+	//Aqui no hay nada que indique qué conversor debe utilizarse
 	@Bean
 	Function<Message<Cliente>, Message<Cliente>> altaCliente(GestorClientes gestorClientes){
 		return (mensaje) -> {
@@ -32,7 +42,9 @@ public class FuncionesCliente {
 			//Podemos validar aqui (a mano)
 			//El tratamiento de errores tambien se hace aquí a mano
 			Cliente clienteInsertado = gestorClientes.insertar(cliente);
-			return MessageBuilder.withPayload(clienteInsertado).build();
+			return MessageBuilder
+				.withPayload(clienteInsertado)
+				.build();
 		};
 	}	
 
