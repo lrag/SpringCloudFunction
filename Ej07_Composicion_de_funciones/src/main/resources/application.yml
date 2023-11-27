@@ -1,2 +1,12 @@
+#
+# CADENAS PERMITIDAS
+#
+# supplier (1) | function (n) | consumer (1)
+# supplier (1) | function (n) 
+# function (n) | consumer (1)
+#
 
-spring.cloud.function.definition: mayusculas|inversor|corchetes
+spring:
+  cloud:
+    function:
+      definition: mayusculas|inversor|corchetes
