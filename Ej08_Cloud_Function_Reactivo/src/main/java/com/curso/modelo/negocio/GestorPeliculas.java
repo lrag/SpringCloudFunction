@@ -15,10 +15,7 @@ public class GestorPeliculas {
 
 	public Mono<Pelicula> insertar(Pelicula pelicula) {
 		//Aqui no pondremos código que esté fuera del stream que hemos de construir
-		return peliculaRepo.save(pelicula).map(p -> {
-			//Cualquier LN va en los eslabones de la cadena
-			return p;
-		});
+		return peliculaRepo.save(pelicula);
 	}
 	
 	public Mono<Pelicula> modificar(Pelicula pelicula) {

@@ -1,6 +1,7 @@
 package com.curso;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
@@ -33,9 +34,32 @@ public class Aplicacion implements CommandLineRunner{
 	}
 
 	@Bean
+	Supplier<String> hora() {
+		//return () -> Instant.now().toString();
+		return new Supplier<String>() {
+			@Override
+			public String get() {
+				return Instant.now().toString();
+			}
+		};
+	}	
+	
+	@Bean
 	Supplier<Mono<String>> saludos() {
 		return () -> Mono.just("Hola mundo");
 	}
+	
+	@Bean
+	Supplier<List<String>> palabrasImperativo() {
+		return () ->  Arrays.asList(
+				"HELLO", "DOCTOR", "NAME", "CONTINUE", "YESTERDAY", "TOMORROW",
+				"HELLO", "DOCTOR", "NAME", "CONTINUE", "YESTERDAY", "TOMORROW",
+				"HELLO", "DOCTOR", "NAME", "CONTINUE", "YESTERDAY", "TOMORROW",
+				"HELLO", "DOCTOR", "NAME", "CONTINUE", "YESTERDAY", "TOMORROW",
+				"HELLO", "DOCTOR", "NAME", "CONTINUE", "YESTERDAY", "TOMORROW",
+				"HELLO", "DOCTOR", "NAME", "CONTINUE", "YESTERDAY", "TOMORROW"
+			);
+	}	
 
 	@Bean
 	@PollableBean
@@ -74,30 +98,24 @@ public class Aplicacion implements CommandLineRunner{
 	}
 	*/
 	
-	@Bean
-	Supplier<List<String>> palabrasImperativo() {
-		return () ->  Arrays.asList(
-				"HELLO", "DOCTOR", "NAME", "CONTINUE", "YESTERDAY", "TOMORROW",
-				"HELLO", "DOCTOR", "NAME", "CONTINUE", "YESTERDAY", "TOMORROW",
-				"HELLO", "DOCTOR", "NAME", "CONTINUE", "YESTERDAY", "TOMORROW",
-				"HELLO", "DOCTOR", "NAME", "CONTINUE", "YESTERDAY", "TOMORROW",
-				"HELLO", "DOCTOR", "NAME", "CONTINUE", "YESTERDAY", "TOMORROW",
-				"HELLO", "DOCTOR", "NAME", "CONTINUE", "YESTERDAY", "TOMORROW"
-			);
-	}
-
 	@Override
 	public void run(String... args) throws Exception {
 		
 		System.out.println("=================================================");
+		Supplier<List<String>> palabrasImperativo = functionCatalog.lookup("palabrasImperativo");
+		List<String> palabras = palabrasImperativo.get();
+		for(String p: palabras) {
+			System.out.println(p);
+		}
 		
-		//Supplier<Message<Flux<String>>> palabrasReactivo = functionCatalog.lookup("palabrasReactivo");
-		//Message<Flux<String>> mensaje = palabrasReactivo.get();
-		//mensaje.getPayload().subscribe(p -> System.out.println(p));
+		System.out.println("=================================================");
+		Supplier<Message<Flux<String>>> palabrasReactivo = functionCatalog.lookup("palabrasReactivo");
+		Message<Flux<String>> mensaje2 = palabrasReactivo.get();
+		Flux<String> flujo = mensaje2.getPayload();
+		flujo.subscribe(p -> System.out.println(p));
+		
+		//mensaje2.getPayload().subscribe(p -> System.out.println(p));
 			
-		Supplier<Flux<String>> palabrasReactivo = functionCatalog.lookup("palabrasReactivo");
-		palabrasReactivo.get().subscribe(p -> System.out.println(p));
-		
 	}
 
 }

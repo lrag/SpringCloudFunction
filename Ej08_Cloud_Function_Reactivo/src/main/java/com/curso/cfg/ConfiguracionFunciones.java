@@ -24,7 +24,7 @@ public class ConfiguracionFunciones {
 		return (filtro) -> {
 			return MessageBuilder
 				.withPayload(peliculaRepo.findAll())
-				.setHeader(MessageHeaders.CONTENT_TYPE, MediaType.TEXT_EVENT_STREAM_VALUE)
+				//.setHeader(MessageHeaders.CONTENT_TYPE, MediaType.TEXT_EVENT_STREAM_VALUE)
 				.build();
 		};
 	}

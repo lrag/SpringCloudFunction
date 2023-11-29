@@ -22,7 +22,6 @@ public class Aplicacion implements CommandLineRunner{
 		
 		System.out.println("=====================================");
 		
-		/*
 		webClient
 			.get()
 			.uri("/listarPeliculas")
@@ -31,7 +30,9 @@ public class Aplicacion implements CommandLineRunner{
 			.subscribe( p -> {
 					System.out.println(p);
 				});
-		*/
+		
+		/*
+		System.out.println(Thread.currentThread().getId());
 		
 		webClient
 		.get()
@@ -39,12 +40,14 @@ public class Aplicacion implements CommandLineRunner{
 		.retrieve()
 		.bodyToFlux(String.class)
 		.subscribe( p -> {
+				System.out.println(Thread.currentThread().getId());
 				System.out.println(p);
 			});	
 		
+		
+		*/
+		
 		Thread.sleep(60_000);
-		
-		
 	}
 
 }
