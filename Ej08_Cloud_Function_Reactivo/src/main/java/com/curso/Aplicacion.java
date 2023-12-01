@@ -32,6 +32,10 @@ public class Aplicacion implements CommandLineRunner{
 	public static void main(String[] args) {
 		SpringApplication.run(Aplicacion.class, args);
 	}
+	
+	////////////////
+	// IMPERATIVO //
+	////////////////
 
 	@Bean
 	Supplier<String> hora() {
@@ -42,11 +46,6 @@ public class Aplicacion implements CommandLineRunner{
 				return Instant.now().toString();
 			}
 		};
-	}	
-	
-	@Bean
-	Supplier<Mono<String>> saludos() {
-		return () -> Mono.just("Hola mundo");
 	}
 	
 	@Bean
@@ -59,8 +58,17 @@ public class Aplicacion implements CommandLineRunner{
 				"HELLO", "DOCTOR", "NAME", "CONTINUE", "YESTERDAY", "TOMORROW",
 				"HELLO", "DOCTOR", "NAME", "CONTINUE", "YESTERDAY", "TOMORROW"
 			);
-	}	
-
+	}		
+	
+	//////////////
+	// REACTIVO //
+	//////////////
+	
+	@Bean
+	Supplier<Mono<String>> saludos() {
+		return () -> Mono.just("Hola mundo");
+	}
+	
 	@Bean
 	@PollableBean
 	Supplier<Message<Flux<String>>> palabrasReactivo() {

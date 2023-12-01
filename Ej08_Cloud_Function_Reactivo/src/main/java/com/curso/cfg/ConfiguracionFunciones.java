@@ -1,5 +1,6 @@
 package com.curso.cfg;
 
+import java.util.List;
 import java.util.function.Function;
 
 import org.springframework.context.annotation.Bean;
